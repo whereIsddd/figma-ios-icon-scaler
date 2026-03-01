@@ -1,0 +1,14 @@
+{
+  "name": "figma-icon-generator-plugin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Figma plugin (TypeScript, manifest v3-style) that generates iOS-style app icon frames at common sizes.",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.100.1",
+    "typescript": "^5.7.0"
+  }
+}

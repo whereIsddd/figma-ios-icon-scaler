@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    :root { 
+      --bg: #ffffff; 
+      --text: #000000; 
+      --secondary: #666666;
+      --border: #eeeeee;
+    }
+    body { 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+      padding: 24px; 
+      background: var(--bg); 
+      color: var(--text);
+      margin: 0;
+    }
+    h3 { font-size: 15px; font-weight: 600; margin: 0 0 8px 0; letter-spacing: -0.01em; }
+    p { font-size: 12px; color: var(--secondary); margin: 0 0 16px 0; line-height: 1.5; }
+    
+    .btn-main { 
+      width: 100%; 
+      padding: 14px; 
+      background: #000000; 
+      color: #ffffff; 
+      border: none; 
+      border-radius: 4px; 
+      cursor: pointer; 
+      font-weight: 500; 
+      font-size: 13px;
+      transition: background 0.2s ease;
+      margin-top: 8px;
+    }
+    .btn-main:hover { background: #333333; }
+    
+    .footer { 
+      margin-top: 16px; 
+      padding-top: 12px; 
+      border-top: 1px solid var(--border); 
+    }
+    .size-tag {
+      display: inline-block;
+      font-size: 10px;
+      color: #666;
+      background: #f9f9f9;
+      padding: 4px 8px;
+      margin: 2px;
+      border-radius: 3px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      user-select: none;
+    }
+    .size-tag.selected {
+      background: #000;
+      color: #fff;
+      border-color: #000;
+    }
+  </style>
+</head>
+<body>
+  <h3>iOS app icon size scaling</h3>
+  <p>Select your 1024×1024 source icon. Choose which iOS size groups to generate, then click the button.</p>
+
+  <div class="footer">
+    <div class="size-tag selected" data-pt="20">20pt (2×, 3×)</div>
+    <div class="size-tag selected" data-pt="29">29pt (1×, 2×, 3×)</div>
+    <div class="size-tag selected" data-pt="40">40pt (1×, 2×, 3×)</div>
+    <div class="size-tag selected" data-pt="60">60pt (2×, 3×)</div>
+    <div class="size-tag selected" data-pt="76">76pt (1×, 2×)</div>
+    <div class="size-tag selected" data-pt="83.5">83.5pt (2×)</div>
+    <div class="size-tag selected" data-pt="1024">1024pt (1×)</div>
+  </div>
+
+  <button class="btn-main" onclick="generate()">Generate selected sizes</button>
+
+  <script>
+    const tags = Array.from(document.querySelectorAll('.size-tag'));
+
+    tags.forEach(tag => {
+      tag.addEventListener('click', () => {
+        tag.classList.toggle('selected');
+      });
+    });
+
+    function getSelectedPts() {
+      const active = tags.filter(t => t.classList.contains('selected'));
+      return active.map(t => parseFloat(t.getAttribute('data-pt') || '0')).filter(n => !Number.isNaN(n));
+    }
+
+    function generate() {
+      const selectedPts = getSelectedPts();
+      parent.postMessage({ pluginMessage: { type: 'scale-icons', selectedPts } }, '*');
+    }
+  </script>
+</body>
+</html>
